@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { ScrollBar, ScrollArea } from "@/components/ui/scroll-area";
+import TopMenu from "@/components/TopMenu";
 
 export type ContributionReport = {
     id: string;
@@ -287,75 +288,71 @@ const Contribution = ({
     ];
 
     return (
-        <div className="px-4">
-            <div className="my-4 flex items-center space-x-4">
-                <div>
-                    <Link href={route("home")}>
-                        <ArrowLeftCircle />
-                    </Link>
+        <>
+            <TopMenu title="Rekapitulasi Iuran Bulanan RT01" />
+            <Separator />
+            <div className="px-4 py-24">
+                <div className="flex space-x-4 justify-between">
+                    <Card>
+                        <CardHeader className="pb-2">
+                            <CardDescription>Total Data</CardDescription>
+                            <CardTitle className="text-4xl">
+                                {total_data}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-xs text-muted-foreground">
+                                Rumah
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader className="pb-2">
+                            <CardDescription>Progress Iuran</CardDescription>
+                            <CardTitle className="text-4xl">
+                                {(
+                                    (total_resident_paid / total_data) *
+                                    100
+                                ).toFixed(2)}
+                                %
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="text-xs text-muted-foreground">
+                                {total_resident_paid} dari {total_data} rumah
+                                telah membayar iuran
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Progress value={80} aria-label="12% increase" />
+                        </CardFooter>
+                    </Card>
                 </div>
-                <h1 className=" text-xl font-semibold">
-                    Rekapitulasi Iuran Bulanan RT01
-                </h1>
-            </div>
-            <Separator />
-            <div className="flex justify-between">
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardDescription>Total Data</CardDescription>
-                        <CardTitle className="text-4xl">{total_data}</CardTitle>
+                <Card className="mt-4">
+                    <CardHeader>
+                        <CardTitle>Filter</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <div className="text-xs text-muted-foreground">
-                            Rumah
+                    <CardContent className="">
+                        <div className="">
+                            {filterByYear(selectedYear, setSelectedYear)}
+                        </div>
+                        <div className="">
+                            {filterByMonth(selectedMonth, setSelectedMonth)}
                         </div>
                     </CardContent>
                 </Card>
-                <Card>
-                    <CardHeader className="pb-2">
-                        <CardDescription>Progress Iuran</CardDescription>
-                        <CardTitle className="text-4xl">
-                            {((total_resident_paid / total_data) * 100).toFixed(
-                                2
-                            )}
-                            %
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-xs text-muted-foreground">
-                            {total_resident_paid} dari {total_data} rumah telah
-                            membayar iuran
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Progress value={80} aria-label="12% increase" />
-                    </CardFooter>
-                </Card>
+                <Separator />
+                <div className="mt-4">
+                    <h2 className="py-4 font-semibold">
+                        Data Iuran untuk bulan :{" "}
+                        <span className="italic">
+                            {months[selectedMonth]} {selectedYear}
+                        </span>
+                    </h2>
+                    <DataTable columns={columns} data={data} />
+                </div>
             </div>
-            <Card className="mt-4">
-                <CardHeader>
-                    <CardTitle>Filter</CardTitle>
-                </CardHeader>
-                <CardContent className="">
-                    <div className="">
-                        {filterByYear(selectedYear, setSelectedYear)}
-                    </div>
-                    <div className="">
-                        {filterByMonth(selectedMonth, setSelectedMonth)}
-                    </div>
-                </CardContent>
-            </Card>
-            <Separator />
-            <div className="mt-4">
-                <h2 className="py-4 font-semibold">
-                    Data Iuran untuk bulan :{" "}
-                    <span className="italic">
-                        {months[selectedMonth]} {selectedYear}
-                    </span>
-                </h2>
-                <DataTable columns={columns} data={data} />
-            </div>
-        </div>
+        </>
     );
 };
 

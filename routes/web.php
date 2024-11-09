@@ -6,11 +6,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\ContributionReportController;
+use App\Http\Controllers\Nariyah\CashflowController;
 use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+// Route::domain('nariyah.localhost')->group(function () {
+//     Route::get('/cashflow', [CashflowController::class, 'index']);
+// });
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,8 +32,9 @@ Route::get('/dashboard', function () {
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('contributions-report', [ContributionReportController::class, 'index'])->name('contributions-report.index');
-Route::get('cashflow', [CashflowReportController::class, 'index'])->name('cashflow.index');
+Route::get('iuran', [ContributionReportController::class, 'index'])->name('contributions-report.index');
+Route::get('kas', [CashflowReportController::class, 'index'])->name('cashflow.index');
+Route::get('kas-detail', [CashflowReportController::class, 'show'])->name('cashflow.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

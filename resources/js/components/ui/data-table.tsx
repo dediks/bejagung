@@ -21,24 +21,20 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import { useState } from "react";
+import ColumnVisibilityDropdown from "@/components/datatable/ColumnVisibilityDropdown";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
+    filters?: any;
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    filters,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -62,56 +58,26 @@ export function DataTable<TData, TValue>({
         },
     });
 
-    console.log(table);
-
     return (
-        <div>
+        <div className="w-full">
             <div className="flex items-center py-4 space-x-2">
-                {columns[0].accessorKey == "name" && (
-                    <Input
-                        placeholder="Cari berdasarkan nama.."
-                        value={
-                            (table
-                                .getColumn("name")
-                                ?.getFilterValue() as string) ?? ""
-                        }
-                        onChange={(event) =>
-                            table
-                                .getColumn("name")
-                                ?.setFilterValue(event.target.value)
-                        }
-                        className="max-w-sm"
-                    />
-                )}
+                <Input
+                    placeholder="Cari berdasarkan nama.."
+                    value={
+                        (table.getColumn("name")?.getFilterValue() as string) ??
+                        ""
+                    }
+                    onChange={(event) =>
+                        table
+                            .getColumn("name")
+                            ?.setFilterValue(event.target.value)
+                    }
+                    className="max-w-sm"
+                />
 
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Columns
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                );
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <ColumnVisibilityDropdown table={table} />
             </div>
-            <div className="rounded-md border">
+            <div className="overflow-visible rounded-md border">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

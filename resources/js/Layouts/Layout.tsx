@@ -11,6 +11,7 @@ import {
     ShoppingCart,
     User,
     Users,
+    Users2,
 } from "lucide-react";
 
 import {
@@ -56,8 +57,8 @@ export default function Layout({
 }: PropsWithChildren<{ header?: ReactNode }>) {
     useFlashToast();
     return (
-        <div className="flex min-h-screen w-full flex-col bg-muted/40">
-            <TooltipProvider>
+        <TooltipProvider>
+            <div className="flex min-h-screen w-full flex-col bg-muted/40">
                 <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
                     <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
                         <Link
@@ -87,12 +88,28 @@ export default function Layout({
                                     href={route("residents.index")}
                                     className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                                 >
-                                    <ShoppingCart className="h-5 w-5" />
+                                    <Users2 className="h-5 w-5" />
                                     <span className="sr-only">Data Wargas</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side="right">
-                                Data Wargas
+                                Data Warga
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href={route("transactions.index")}
+                                    className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                                >
+                                    <Flower2 className="h-5 w-5" />
+                                    <span className="sr-only">
+                                        Data Cashflow
+                                    </span>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right">
+                                Data Cashflow
                             </TooltipContent>
                         </Tooltip>
                         <Tooltip>
@@ -101,12 +118,12 @@ export default function Layout({
                                     href={route("contributions.index")}
                                     className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
                                 >
-                                    <Package className="h-5 w-5" />
-                                    <span className="sr-only">Data Iurans</span>
+                                    <HandCoins className="h-5 w-5" />
+                                    <span className="sr-only">Data Iuran</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side="right">
-                                Data Iurans
+                                Data Iuran
                             </TooltipContent>
                         </Tooltip>
                     </nav>
@@ -127,7 +144,7 @@ export default function Layout({
                         </Tooltip>
                     </nav>
                 </aside>
-                <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+                <div className="w-full flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
                     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
                         <MobileMenu />
                         <Breadcrumb className="hidden md:flex">
@@ -181,13 +198,11 @@ export default function Layout({
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </header>
-                    {header && <div className="p-4">{header}</div>}
-                    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
-                        {children}
-                    </main>
+                    {/* {header && <div className="p-4">{header}</div>} */}
+                    <main className="w-full px-4">{children}</main>
                 </div>
                 <Toaster />
-            </TooltipProvider>
-        </div>
+            </div>
+        </TooltipProvider>
     );
 }

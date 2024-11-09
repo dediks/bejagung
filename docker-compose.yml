@@ -9,6 +9,8 @@ services:
         image: "sail-8.3/app"
         extra_hosts:
             - "host.docker.internal:host-gateway"
+            - "nariyah.localhost:127.0.0.1"
+            - "rt01.localhost:127.0.0.1"
         ports:
             - "8080:80"
             - "5173:5173"

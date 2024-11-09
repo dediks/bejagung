@@ -26,7 +26,27 @@ import {
     ArrowUpRightIcon,
 } from "lucide-react";
 
-export default function Cashflow() {
+interface Transaction {
+    id: number;
+    description: string;
+    transaction_date: string;
+    transaction_type: number;
+    amount: number;
+}
+
+interface CashflowProps {
+    total_balance?: number;
+    income?: number;
+    expense?: number;
+    latest_transactions?: Transaction[];
+}
+
+export default function Cashflow({
+    total_balance = 0,
+    income = 0,
+    expense = 0,
+    latest_transactions = [],
+}: CashflowProps) {
     return (
         <div className="px-4">
             <div className="my-4 flex items-center space-x-4">
@@ -42,7 +62,7 @@ export default function Cashflow() {
                 <CardHeader className="text-center">
                     <CardDescription>Saldo</CardDescription>
                     <CardTitle className="text-2xl font-bold">
-                        Rp. 50.000.000
+                        Rp. {total_balance}
                     </CardTitle>
                 </CardHeader>
             </Card>
@@ -55,9 +75,7 @@ export default function Cashflow() {
                         <CardDescription className="text-xs text-gray-100">
                             Uang Masuk
                         </CardDescription>
-                        <CardTitle className="text-xl">
-                            Rp. 12.000.000
-                        </CardTitle>
+                        <CardTitle className="text-xl">Rp. {income}</CardTitle>
                     </CardHeader>
                 </Card>
                 <Card className="bg-yellow-500 text-gray-100 w-6/12">
@@ -68,9 +86,7 @@ export default function Cashflow() {
                         <CardDescription className="text-xs text-gray-100">
                             Uang Keluar
                         </CardDescription>
-                        <CardTitle className="text-xl">
-                            Rp. 12.000.000
-                        </CardTitle>
+                        <CardTitle className="text-xl">Rp. {expense}</CardTitle>
                     </CardHeader>
                 </Card>
             </div>
@@ -78,53 +94,39 @@ export default function Cashflow() {
                 <CardHeader>
                     <CardTitle className="flex justify-between">
                         <span>Transaksi terakhir</span>
-                        <span className="text-gray-500 text-sm">
-                            Lihat semua..
-                        </span>
+                        <Link href={route("cashflow.show")}>
+                            <span className="underline text-gray-500 text-sm">
+                                Lihat semua..
+                            </span>
+                        </Link>
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="">
                     <Table className="">
                         <TableBody>
-                            <TableRow>
-                                <TableCell className="flex flex-col">
-                                    <span className="font-semibold">
-                                        Belanja Hadiah
-                                    </span>
-                                    <span className="text-xs font-thin">
-                                        10 Sept 24
-                                    </span>
-                                </TableCell>
-                                <TableCell className="text-right text-red-500">
-                                    - Rp. 2.000.000
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell className="flex flex-col">
-                                    <span className="font-semibold">
-                                        Tarikan Agustusan
-                                    </span>
-                                    <span className="text-xs font-thin">
-                                        10 Sept 24
-                                    </span>
-                                </TableCell>
-                                <TableCell className="text-right text-green-600">
-                                    + Rp. 3.000.000
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell className="flex flex-col">
-                                    <span className="font-semibold">
-                                        Iuran bulanan
-                                    </span>
-                                    <span className="text-xs font-thin">
-                                        10 Sept 24
-                                    </span>
-                                </TableCell>
-                                <TableCell className="text-right text-green-600">
-                                    + Rp. 600.000
-                                </TableCell>
-                            </TableRow>
+                            {latest_transactions.map((transaction) => (
+                                <TableRow key={transaction.id}>
+                                    <TableCell className="flex flex-col">
+                                        <span className="font-semibold">
+                                            {transaction.description}
+                                        </span>
+                                        <span className="text-xs font-thin">
+                                            {transaction.transaction_date}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        {transaction.transaction_type === 1 ? (
+                                            <span className="text-green-600">
+                                                + Rp. {transaction.amount}
+                                            </span>
+                                        ) : (
+                                            <span className="text-red-500">
+                                                - Rp. {transaction.amount}
+                                            </span>
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </CardContent>
