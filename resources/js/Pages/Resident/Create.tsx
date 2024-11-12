@@ -1,4 +1,3 @@
-import { columns } from "@/components/datatable/resident/columns";
 import { Button } from "@/components/ui/button";
 import {
     Card,
